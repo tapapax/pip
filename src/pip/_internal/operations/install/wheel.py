@@ -52,6 +52,10 @@ logger = logging.getLogger(__name__)
 
 def normpath(src, p):
     # type: (str, str) -> str
+    # On Windows, do not handle relative paths if they belong to different
+    # logical disks
+    if os.path.splitdrive(src)[0] != os.path.splitdrive(p)[0]:
+        return src.replace(os.path.sep, '/')
     return os.path.relpath(src, p).replace(os.path.sep, '/')
 
 
